@@ -1,5 +1,6 @@
 using System.Text;
 using AuthMultiplayerGame;
+using AuthMultiplayerGame.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

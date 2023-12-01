@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AuthMultiplayerGame;
+namespace AuthMultiplayerGame.Data;
 
 // Database context for managing user-related data
 public class UserDbContext : IdentityDbContext<IdentityUser>

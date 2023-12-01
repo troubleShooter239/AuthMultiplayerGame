@@ -1,12 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AuthMultiplayerGame.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace AuthMultiplayerGame;
+namespace AuthMultiplayerGame.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -25,12 +26,12 @@ public class AuthorizeController : Controller
     }
 
     [HttpPost("Register")]
-    public async Task<IActionResult> Register(ParamUser paramUser)
+    public async Task<IActionResult> Register(ParamRegister paramRegister)
     {
         // Create a new IdentityUser based on registration parameters
-        var user = new IdentityUser{ UserName = paramUser.Username, Email = paramUser.Email };
+        var user = new IdentityUser{ UserName = paramRegister.Username, Email = paramRegister.Email };
         // Attempt to create a new user
-        var result = await _userManager.CreateAsync(user, paramUser.Password!);
+        var result = await _userManager.CreateAsync(user, paramRegister.Password!);
 
         // Check if user creation was successful
         if (!result.Succeeded) { return BadRequest(); }
@@ -47,13 +48,17 @@ public class AuthorizeController : Controller
     }
 
     [HttpPost("SignIn")]
-    public async Task<IActionResult> SignIn(ParamUser paramUser)
+    public async Task<IActionResult> SignIn(ParamLogin paramLogin)
     {
+        //var passwordHash = _hasher.HashString(paramLogin.Password!);
         // Find the user by email
-        var user = await _userManager.FindByEmailAsync(paramUser.Email!);
+        var user = await _userManager.FindByEmailAsync(paramLogin.Email!);
         // Attempt to sign in the user with the provided password
         var result = await _signInManager.PasswordSignInAsync(
-            user!, paramUser.Password!, false, false
+            user!, 
+            paramLogin.Password!,  
+            false, 
+            false
         );
 
         // Check if sign-in was successful
